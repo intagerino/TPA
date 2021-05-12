@@ -29,6 +29,7 @@
         <h:inputText a:placeholder="description" value="#{medicines.medicineToCreate.description}" required="true" />
         <h:commandButton value="Add new medicine" action="#{medicines.createMedicine}" />
     </h:form>
+    <h:link outcome="myBatis/diseases" value="MyBatis implementation"/>
     <h:graphicImage value="#{giveImage.getImageStatus()}"/>
 </h:body>
 </html>

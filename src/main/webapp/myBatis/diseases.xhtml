@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+>
+<h:head/>
+<h:body>
+    <h2>Diseases:</h2>
+    <ol>
+        <ui:repeat value="#{diseasesMyBatis.allDiseases}" var="disease">
+            <li><h:link value="Name: #{disease.name} Description: #{disease.description}" outcome="disease?diseaseId=#{disease.id}" /></li>
+        </ui:repeat>
+    </ol>
+    <h:form>
+        <h:inputText value="#{diseasesMyBatis.diseaseToCreate.name}" required="true" />
+        <h:inputText placeholder="description" value="#{diseasesMyBatis.diseaseToCreate.description}" required="true" />
+        <h:commandButton value="Add new disease" action="#{diseasesMyBatis.createDisease}" />
+    </h:form>
+    <h:link value="Back to index" outcome="/index"/>
+</h:body>
+</html>
