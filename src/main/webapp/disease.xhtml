@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head/>
+<h:body>
+    <h1 style="#{textStyles.getStyle()}">#{casesForDisease.disease.name}</h1>
+    <p style="#{textStyles.getStyle()}">#{casesForDisease.disease.description}</p>
+    <p>#{textStyles.getText()}</p>
+
+    <h2>Cases for #{casesForDisease.disease.name}</h2>
+    <ol>
+        <ui:repeat value="#{casesForDisease.disease.yearlyCases}" var="yearlyCase">
+            <li>
+                <p>Year: #{yearlyCase.year} Number of cases:#{yearlyCase.cases}</p>
+            </li>
+        </ui:repeat>
+    </ol>
+    <h:form>
+        <h:inputText a:placeholder="year" value="#{casesForDisease.yearlyCaseToCreate.year}" required="true" />
+        <h:inputText a:placeholder="cases" value="#{casesForDisease.yearlyCaseToCreate.cases}" required="true" />
+        <h:commandButton value="Add a year's case data about the disease" action="#{casesForDisease.createYearlyCase}" >
+            <f:param name="diseaseId" value="#{casesForDisease.disease.id}" />
+        </h:commandButton>
+    </h:form>
+    <h2>Medicines for #{medicinesForDiseases.disease.name}</h2>
+    <ol>
+        <ui:repeat value="#{medicinesForDiseases.addedMedicines}" var="medicine">
+            <ul>
+                <h:outputText value="#{medicine.name}"/>
+            </ul>
+        </ui:repeat>
+    </ol>
+
+    <h3>Add a medicine:</h3>
+    <h:form>
+        <h:selectOneMenu value="#{medicinesForDiseases.medicine}" converter="omnifaces.SelectItemsConverter">
+            <f:selectItem itemLabel="Choose medicine" noSelectionOption="true"/>
+            <f:selectItems value="#{medicinesForDiseases.unaddedMedicines}" var="medicine" itemLabel="#{medicine.name}" itemValue="#{medicine}"/>
+        </h:selectOneMenu>
+        <br/>
+        <h:commandButton value="Add medicine" action="#{medicinesForDiseases.addMedicine}">
+            <f:param name="diseaseId" value="#{medicinesForDiseases.disease.id}"/>
+        </h:commandButton>
+    </h:form>
+    <h:link outcome="index" value="Back to diseases page"/>
+</h:body>
+</html>
