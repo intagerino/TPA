@@ -72,4 +72,47 @@ public class DiseasesController {
             return Response.status(Response.Status.CONFLICT).build();
         }
     }
+
+    @Path("/lock/{id}")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response Locking(@PathParam("id") final Integer diseaseId, DiseaseDto diseaseDto){
+        try{
+            Disease existingDisease = diseasesDAO.findOne(diseaseId);
+            if(existingDisease == null){
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+            String name = existingDisease.getName();
+            try{
+                Thread.sleep(6000);
+            }
+            catch(Exception e){
+                System.out.println(e);
+            }
+            existingDisease.setName(name+diseaseDto.getName());
+            existingDisease.setDescription(diseaseDto.getDescription());
+
+            diseasesDAO.update(existingDisease);
+            return Response.ok().build();
+        } catch (OptimisticLockException e){
+            return Response.status(Response.Status.CONFLICT).build();
+        }
+    }
+
+    @Path("/error/{id}")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Transactional
+    public void Erroring(@PathParam("id") final Integer diseaseId, DiseaseDto diseaseDto){
+        System.out.println("Console is: @@@@@@@@@@@@@@@@@@@@@@@@@");
+        try{
+            Disease existingDisease = diseasesDAO.findOne(diseaseId);
+            existingDisease.setName(diseaseDto.getName()+"a");
+            existingDisease.setDescription(diseaseDto.getDescription()+"a");
+
+            diseasesDAO.update(existingDisease);
+        } catch (OptimisticLockException e){
+        }
+    }
 }
